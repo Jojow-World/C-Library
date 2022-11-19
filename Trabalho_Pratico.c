@@ -34,7 +34,7 @@ abertura();
     struct livros publicacao;
     
 
-    printf()
+    
 
 
     
