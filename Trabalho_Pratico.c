@@ -5,7 +5,21 @@
 #include <time.h>
 #define MAX_BIBLIO 100
 
+typedef struct 
+{
 
+
+    char nome[50];
+    char tipo[50];
+    char autor[50];
+    int ano_publi;
+    char local[15];
+    int num_pag;
+
+
+}Publi; //typedef da o apelido da struct 
+
+Publi obras[MAX_BIBLIO]; // array que armazena o nome e tipo de publicação e restatante das vs
 
 void abertura(){
 
@@ -33,13 +47,18 @@ void menu(){
         printf("\t3 - Estatistica total \n");
         printf("\t4 - Mostrar \n");
         printf("\t0 - Sair \n");
+        scanf ("%d", &op);
 
-        scanf ("%d", op);
+        getchar(); // limpar o buffer de memoria
 
             switch (op) {
             
                 case 1:
                     inserir();
+                    break;
+
+                case 2:
+                    listar();
                     break;
             
             default:
@@ -49,29 +68,17 @@ void menu(){
             
         } while(op != 0);
 
-
+        printf("Saindo...");
     } 
 
 
 
-
-typedef struct 
-{
-
     char nome[50];
     char tipo[50];
     char autor[50];
-    int num_publi;
+    int ano_publi;
     char local[15];
     int num_pag;
-
-
-}Publi; //typedef da o apelido da struct 
-
-Publi obras[MAX_BIBLIO]; // array que armazena o nome e tipo de publicação e restatante das vs
-
-
-
 
 
 
@@ -80,28 +87,68 @@ void inserir(){
 
     system("cls");
 
-    char nome[50];
-    char tipo[50];
-   // char autor[50];int num_publi;  char local[15]; int num_pag; 
-   int op;
+    int op;
+    char resp;
+
     
     do
     {
 
         printf("\nDigite o nome da publicacao: ");
         fgets(nome,sizeof(nome),stdin);
+        //printf("\nDigite o nome da publicacao: ");
+        //scanf("%s", &nome);
 
-        printf("\n1Tipo de publicacao (Livro, artigo cientifico, artigo de jornal, outros): ");
-        fgets(tipo,sizeof(tipo),stdin);
+        printf("\nTipo de publicacao (Livro, artigo cientifico, artigo de jornal, outros):");
+        fgets(tipo,sizeof(tipo),stdin);       
+       // printf("\nTipo de publicacao (Livro, artigo cientifico, artigo de jornal, outros):");
+        //scanf("%s", &tipo);
         
+        printf("\nNome do autor:");
+        scanf("%s", &autor);
+
+        printf("\nAno da publicacao:");
+        scanf("%d", &ano_publi);
+
+        printf("\nDigite o numero de paginas da publicacao: ");
+        scanf("%d", &num_pag);
+
+        printf("\nLocal da publicacao: ");
+        scanf("%s", &local);
+
+
+
+
+        printf("Deseja registrar mais alguma publicao? Digite s ou n:\n");
+        scanf("%s",&resp);
+
+            if (resp == 'n')
+            {
+                op = 0;
+            }
+            
+        
+
+
 
     } while (op != 0);
     
-
-
 }
 
-void mostrar(){
+
+void listar(){
+
+    system("cls");
+    printf(" \n LISTA DE REFERENCIAS BIBLIOGRAFICAS \n");
+
+    for ( int i = 0; i < MAX_BIBLIO; i++)
+    {
+        printf("\n ------------------\n");
+        printf("Nome publicacao %s", nome);
+
+
+    }
+    
 
 }
 
@@ -126,7 +173,8 @@ int main(){
 
     abertura();
     menu();
-    inserir();
+
+    
     
     //struct livros publicacao; // publicacao é a variavel, struct livros é um tipo de dado
     
