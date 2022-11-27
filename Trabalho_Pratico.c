@@ -32,6 +32,8 @@ void abertura()
     system("cls");   // limpa a tela e segue pra outra linha de codigo
 }
 
+
+
 void menu(Publi obras[], int totalObras)
 {
 
@@ -43,7 +45,7 @@ void menu(Publi obras[], int totalObras)
         printf("Selecione uma das opcoes abaixo: \n\n");
         printf("\t1 - Inserir nova Refencia bibliografica \n");
         printf("\t2 - Listar \n");
-        printf("\t3 - Estatistica total \n");
+        printf("\t3 - Estatistica das obras \n");
         printf("\t4 - Eliminar \n");
         printf("\t0 - Sair \n");
         scanf("%d", &op);
@@ -59,6 +61,10 @@ void menu(Publi obras[], int totalObras)
 
         case 2:
             listar(obras, totalObras);
+            break;
+        
+        case 3:
+            estatisca(obras,totalObras);
             break;
 
         case 4:
@@ -178,7 +184,7 @@ void listar(Publi obras[], int totalObras) // declaracao obras(struct publi) e i
             break;
 
         default:
-            printf("\tPor favor, selecione apenas 1, 2 ou 0\n");
+            printf("\tPor favor, selecione apenas 1,2,3,4 ou 0\n");
             break;
         }
 
@@ -289,6 +295,94 @@ void alterar()
 
 
 
+void estatisca(Publi obras[], int totalObras){
+
+    system("cls");
+    int op;
+
+    do
+    {
+
+        printf("\nSelecione uma das opcoes abaixo: \n\n");
+        printf("\t1- Total de publicacoes \n");
+        printf("\t2- Total de autores \n");
+        printf("\t3- Total de palvras chave \n ");
+        printf("\t4- Total de paginas (todas as obras) \n");
+        printf("\t5- Media de paginas por publicacao \n");
+        printf("\t0- Voltar ao menu \n");
+        scanf("%d", &op);
+
+        getchar(); // limpar o buffer de memoria
+        
+        switch (op)
+        {
+
+        case 1:
+            totalPublicacoes(obras,totalObras);
+            break;
+        case 2:
+            totalAutores(obras,totalObras);
+            break;
+        case 3:
+            totalPalavras_chave(obras,totalObras);
+            break;
+        case 4:
+            total_de_paginas(obras,totalObras);
+            break;
+        case 5:
+            media_de_paginas(obras,totalObras);
+            break;
+
+        default:
+            printf("\tSelecione apenas 1,2,3,4,5 ou 0 para voltar ao menu principal\n");
+            break;
+        }
+
+    } while (op != 0);
+
+    system("cls");
+
+}
+
+
+
+
+
+int totalPublicacoes(Publi obras[], int totalObras){
+
+
+ }
+
+
+
+
+int totalAutores(){
+
+
+}
+
+
+
+int totalPalavras_chave(){
+
+
+}
+
+
+
+int total_de_paginas(){
+
+
+}
+
+
+float media_de_paginas(){
+
+
+
+}
+
+
  int eliminar(Publi obras[], int totalObras)
 {
     int id;
@@ -317,7 +411,7 @@ void alterar()
             return totalObras;
         }
 
-       // printf("Obra eliminada\n");
+        // printf("Obra eliminada\n");
         // system("pause");
     }       
        
