@@ -15,9 +15,9 @@ typedef struct
     int ano_publi;
     char local[15];
     int num_pag;
-    char palavra_chave[20][20];
+    char palavra_chave[20][20]; // 20 palvras de 20 letras
 
-} Publi; // typedef da o apelido da struct
+} Publi; // typedef da o apelido da struct, para nao precisar usar struct "..." toda vez
 
 // array que armazena o nome e tipo de publicação e restatante das vs
 
@@ -69,7 +69,7 @@ void menu(Publi obras[], int totalObras)
 
         case 4:
             totalObras = eliminar(obras, totalObras);
-            printf("%d", totalObras);
+            printf("\tTotal de obras depois da eliminacao:%d\n", totalObras);
             break;
         case 0:
             break;
@@ -89,7 +89,7 @@ int inserir(Publi obras[], int totalObras) // inteiro ? maybe pra adicion
 {
 
     system("cls");
-
+    int total_chave;
     int op;
     char resp;
 
@@ -122,9 +122,18 @@ int inserir(Publi obras[], int totalObras) // inteiro ? maybe pra adicion
         fflush(stdin);
         gets(obras[totalObras].local);
 
-        printf("\nDigite uma palavra chave para esta publicao(Ex: suspense,terror,academico): ");
+        printf("\nQuantas palavras chaves para esta publicao: ");
         fflush(stdin);
-        gets(obras[totalObras].palavra_chave);
+       // 
+        scanf("%d", &total_chave);
+
+            for (int i = 0; i < total_chave; i++)
+            {
+                printf("Digite(Ex: suspense,terror,academico),palavra: %d ", i+1); 
+                fflush(stdin);
+                gets(obras[totalObras].palavra_chave[i]);
+            }
+
 
         printf("Deseja registrar mais alguma publicao? Digite s ou n:\n");
         fflush(stdin);
@@ -162,6 +171,7 @@ void listar(Publi obras[], int totalObras) // declaracao obras(struct publi) e i
         printf("\t2- Todas as publicações de um autor \n");
         printf("\t3- Todas as publicacoes de um tipo \n ");
         printf("\t4- Todas as publicacoes de um ano \n");
+        printf("\t5- Todos os autores \n");
         printf("\t0- Voltar ao menu \n");
         scanf("%d", &op);
 
@@ -182,7 +192,9 @@ void listar(Publi obras[], int totalObras) // declaracao obras(struct publi) e i
         case 4:
             todasPublicacoesAno(obras, totalObras);
             break;
-
+        case 5:
+            todos_Autores(obras, totalObras);
+            break;
         default:
             printf("\tPor favor, selecione apenas 1,2,3,4 ou 0\n");
             break;
@@ -272,8 +284,48 @@ void todasAsPublicacoesTipo(Publi obras[], int totalObras){
                 printf("\t Id:%d - Nome: %s | Tipo: %s | Autor: %s | Ano: %d \n\n",obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor, obras[i].ano_publi);
             }   
         }   
-     
+
+        system("pause");
+        system("cls");
 }
+
+
+ void todos_Autores(Publi obras[], int totalObras){
+
+        char aux[MAX_BIBLIO][20];
+        int totalAux = 0; // variavel contadora
+
+        for (int i = 0; i < totalObras ; i++)
+        {
+           if (totalAux == 0)
+           {
+            strcpy(aux[totalAux],obras[i].autor);
+            totalAux++;
+           }
+           
+            for (int j = 0; j < totalAux; j++)
+            {
+                if (!strcmp(obras[i].autor,aux[j]))
+                {
+                    continue;
+                }
+                strcpy(aux[totalAux],obras[i].autor);
+                totalAux++;
+            }
+            
+        }
+            for (int i = 0; i < totalAux; i++)
+            {
+                printf("Todos os autores: %s\n", aux[i]);
+            }
+            
+
+ }
+
+
+
+
+
 
  
  void todasPalavrasChave(Publi obras[], int totalObras){
@@ -376,7 +428,7 @@ int total_de_paginas(){
 }
 
 
-float media_de_paginas(){
+void media_de_paginas(){
 
 
 
