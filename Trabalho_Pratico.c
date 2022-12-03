@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
 #define MAX_BIBLIO 100
 
 typedef struct
@@ -47,6 +46,7 @@ void menu(Publi obras[], int totalObras)
         printf("\t2 - Listar \n");
         printf("\t3 - Estatistica das obras \n");
         printf("\t4 - Eliminar \n");
+        printf("\t5- Alterar \n");
         printf("\t0 - Sair \n");
         scanf("%d", &op);
 
@@ -69,12 +69,16 @@ void menu(Publi obras[], int totalObras)
 
         case 4:
             totalObras = eliminar(obras, totalObras);
-            printf("\tTotal de obras depois da eliminacao:%d\n", totalObras);
+            printf("\tTotal de obras depois da eliminacao: %d \n\n", totalObras);
             break;
+
+        case 5:
+            alterar(obras, totalObras);
+
         case 0:
             break;
         default:
-            
+            printf("\tPor favor, selecione apenas 1,2,3,4 ou 0\n");
             break;
         }
 
@@ -85,7 +89,7 @@ void menu(Publi obras[], int totalObras)
 
 
 
-int inserir(Publi obras[], int totalObras) // inteiro ? maybe pra adicion
+int inserir(Publi obras[], int totalObras) // inteiro para add ao total de obras
 {
 
     system("cls");
@@ -96,19 +100,19 @@ int inserir(Publi obras[], int totalObras) // inteiro ? maybe pra adicion
     do
     {
 
-        printf("\nDigite o nome da publicacao: ");
+        /* printf("\nDigite o nome da publicacao: ");
         fflush(stdin);
         gets(obras[totalObras].nome);
 
         printf("\nTipo de publicacao (Livro, artigo cientifico, artigo de jornal, outros):");
         fflush(stdin);
-        gets(obras[totalObras].tipo);
+        gets(obras[totalObras].tipo); */
 
         printf("\nNome do autor:");
         fflush(stdin);
         gets(obras[totalObras].autor);
 
-        printf("\nApelido Autor: ");
+        /* printf("\nApelido Autor: ");
         fflush(stdin);
         gets(obras[totalObras].autorApelido);
 
@@ -122,9 +126,9 @@ int inserir(Publi obras[], int totalObras) // inteiro ? maybe pra adicion
         fflush(stdin);
         gets(obras[totalObras].local);
 
-        printf("\nQuantas palavras chaves para esta publicao: ");
+        printf("\nQuantas palavras chaves para esta publicao(Digite 1,2,..., ou 0 para nenhuma palavra chave): ");
         fflush(stdin);
-       // 
+        
         scanf("%d", &total_chave);
 
             for (int i = 0; i < total_chave; i++)
@@ -132,10 +136,10 @@ int inserir(Publi obras[], int totalObras) // inteiro ? maybe pra adicion
                 printf("Digite(Ex: suspense,terror,academico),palavra: %d ", i+1); 
                 fflush(stdin);
                 gets(obras[totalObras].palavra_chave[i]);
-            }
+            } */
 
 
-        printf("Deseja registrar mais alguma publicao? Digite s ou n:\n");
+        printf("\nDeseja registrar mais alguma publicao? Digite s ou n:\n");
         fflush(stdin);
         scanf("%c", &resp);
 
@@ -168,10 +172,11 @@ void listar(Publi obras[], int totalObras) // declaracao obras(struct publi) e i
 
         printf("\nSelecione uma das opcoes abaixo: \n\n");
         printf("\t1- Listar tudo \n");
-        printf("\t2- Todas as publicações de um autor \n");
+        printf("\t2- Todas as publicacoes de um autor \n");
         printf("\t3- Todas as publicacoes de um tipo \n ");
         printf("\t4- Todas as publicacoes de um ano \n");
         printf("\t5- Todos os autores \n");
+        printf("\t6 - Todas as publicacoes com palavra chave \n");
         printf("\t0- Voltar ao menu \n");
         scanf("%d", &op);
 
@@ -195,6 +200,8 @@ void listar(Publi obras[], int totalObras) // declaracao obras(struct publi) e i
         case 5:
             todos_Autores(obras, totalObras);
             break;
+        case 6:
+            Publicaoes_que_contenha_PavraChave(obras, totalObras);
         default:
             printf("\tPor favor, selecione apenas 1,2,3,4 ou 0\n");
             break;
@@ -210,11 +217,53 @@ void listarTudo(Publi obras[], int totalObras)
 {
     for (int i = 0; i < totalObras; i++)
     {
-        printf("\tid: %d - Nome: %s | Tipo: %s | Autor: %s | Ano Public: %d \n\n", obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor,obras[i].ano_publi);
+        printf("\tid: %d - Nome: %s | Tipo: %s | Autor: %s %s | Ano Public: %d \n\n", obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor,obras[i].autorApelido, obras[i].ano_publi);
     }
 
     system("pause");
 }
+
+
+void todos_Autores(Publi obras[], int totalObras){
+
+        char aux[MAX_BIBLIO][20];
+        int totalAux = 0; // variavel contadora
+
+        for (int i = 0; i < totalObras ; i++)
+        {
+           if (totalAux == 0)
+           {
+            strcpy(aux[totalAux],obras[i].autor);
+            totalAux++;
+           }
+           
+            for (int j = 0; j < totalAux; j++)
+            {
+                if (!strcmp(obras[i].autor,aux[j]))
+                {
+                    
+                    break;
+                }
+                
+                strcpy(aux[totalAux],obras[i].autor);
+                totalAux++;
+            }
+            
+        }
+            for (int i = 0; i < totalAux; i++)
+            {
+                printf("Autor: %s\n", aux[i]);
+            }
+
+        
+
+        system("pause");
+        system("cls");
+ }
+
+
+
+
 
 
 void todasAsPublicacoesAutor(Publi obras[], int totalObras)
@@ -229,12 +278,12 @@ void todasAsPublicacoesAutor(Publi obras[], int totalObras)
     {
         if (!strcmp(obras[i].autor, autor)) // string compar função de comparaçaõ, se obra[i].autor é diferente de autor
         {
-            printf("\tId:%d - Nome: %s | Tipo: %s | Autor: %s  \n\n", obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor);
+            printf("\tId:%d - Nome: %s | Tipo: %s | Autor: %s %s \n\n", obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor, obras[i].autorApelido);
         }
 
         else if (!strcmp(obras[i].autorApelido, autor))
         {
-            printf("\tId:%d - Nome: %s | Tipo: %s | Autor: %s  \n\n", obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor);
+            printf("\tId:%d - Nome: %s | Tipo: %s | Autor: %s %s \n\n", obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor, obras[i].autorApelido);
         }
         
     }
@@ -252,7 +301,7 @@ void todasAsPublicacoesTipo(Publi obras[], int totalObras){
 
         char tipo[20];
 
-        printf("Digite um tipo de publicacao(Livro,jornal...etc): ");
+        printf("Digite um tipo de publicacao(Livro,jornal...etc): \n");
         fflush(stdin);
         gets(tipo);
 
@@ -260,12 +309,13 @@ void todasAsPublicacoesTipo(Publi obras[], int totalObras){
         {
             if (!strcmp(obras[i].tipo, tipo))
             {
-                printf("\t Id:%d - Nome: %s | Tipo: %s | Autor: %s \n\n",obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor);
+                printf("\t Id:%d - Nome: %s | Tipo: %s | Autor: %s %s \n\n",obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor, obras[i].autorApelido);
             }
                
         }
 
         system("pause");
+        system("cls");
 }
 
 
@@ -281,7 +331,7 @@ void todasAsPublicacoesTipo(Publi obras[], int totalObras){
         {
             if ((obras[i].ano_publi != ano))
             {
-                printf("\t Id:%d - Nome: %s | Tipo: %s | Autor: %s | Ano: %d \n\n",obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor, obras[i].ano_publi);
+                printf("\t Id:%d - Nome: %s | Tipo: %s | Autor: %s %s | Ano: %d \n\n",obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor, obras[i].autorApelido, obras[i].ano_publi);
             }   
         }   
 
@@ -290,48 +340,15 @@ void todasAsPublicacoesTipo(Publi obras[], int totalObras){
 }
 
 
- void todos_Autores(Publi obras[], int totalObras){
-
-        char aux[MAX_BIBLIO][20];
-        int totalAux = 0; // variavel contadora
-
-        for (int i = 0; i < totalObras ; i++)
-        {
-           if (totalAux == 0)
-           {
-            strcpy(aux[totalAux],obras[i].autor);
-            totalAux++;
-           }
-           
-            for (int j = 0; j < totalAux; j++)
-            {
-                if (!strcmp(obras[i].autor,aux[j]))
-                {
-                    continue;
-                }
-                strcpy(aux[totalAux],obras[i].autor);
-                totalAux++;
-            }
-            
-        }
-            for (int i = 0; i < totalAux; i++)
-            {
-                printf("Todos os autores: %s\n", aux[i]);
-            }
-            
-
- }
-
-
-
+ 
 
 
 
  
- void todasPalavrasChave(Publi obras[], int totalObras){
+ void Publicaoes_que_contenha_PavraChave(Publi obras[], int totalObras){
 
-        char palavra_chave[20][20];
 
+       
 
 
 
@@ -339,10 +356,41 @@ void todasAsPublicacoesTipo(Publi obras[], int totalObras){
 
 
 
-void alterar()
-{
+void alterar(Publi obras[], int totalObras){
 
-}
+        int alterar;
+        char op;
+
+        listarTudo(obras, totalObras);
+
+        printf("\nInsira o id da obra que deseja alterar : ");
+        scanf("%d", alterar);
+
+        for (int i = 0; i < totalObras; i++)
+        {
+        
+                if ( alterar == obras[i].id)
+                {
+                    printf("O que deseja alterar?(nome,tipo...): ");
+                    fflush(stdin);
+                    gets(op);
+
+
+
+                }
+                
+             }
+         
+        }
+            
+
+         
+    
+
+
+
+
+
 
 
 
@@ -358,7 +406,7 @@ void estatisca(Publi obras[], int totalObras){
         printf("\nSelecione uma das opcoes abaixo: \n\n");
         printf("\t1- Total de publicacoes \n");
         printf("\t2- Total de autores \n");
-        printf("\t3- Total de palvras chave \n ");
+        printf("\t3- Total de palavras chave \n ");
         printf("\t4- Total de paginas (todas as obras) \n");
         printf("\t5- Media de paginas por publicacao \n");
         printf("\t0- Voltar ao menu \n");
@@ -402,8 +450,19 @@ void estatisca(Publi obras[], int totalObras){
 
 int totalPublicacoes(Publi obras[], int totalObras){
 
+        int totalAux = 0; // variavel contadora
 
+        for (int i = 0; i < totalObras ; i++)
+        {
+               totalAux = totalAux + totalObras;
+        }
+        
+        printf("Total de obras: %d\n", totalAux);
+        system("pause");
+        system("cls");
  }
+
+ 
 
 
 
@@ -416,19 +475,50 @@ int totalAutores(){
 
 
 int totalPalavras_chave(){
+    
+    int totalPalavrasChave;
 
 
 }
 
 
+ 
+int total_de_paginas(Publi obras[], int totalObras){
+    
+    int totalpag = 0;
 
-int total_de_paginas(){
 
 
+    for (int i = 0; i < totalObras; i++)
+    {
+
+        totalpag = totalpag + obras[i].num_pag;
+       
+    }
+    
+       printf("\nNumero total de paginas(todas as obras): %d \n", totalpag);
+
+       system("pause");
+       system("cls");
 }
 
 
-void media_de_paginas(){
+void media_de_paginas(Publi obras[], int totalObras){
+
+        int media;
+        int totalpag = 0;
+
+        for (int i = 0; i < totalObras; i++)
+        {
+           totalpag = totalpag + obras[i].num_pag; 
+           media = totalpag / totalObras;
+        }
+        
+
+        printf("A media de paginas por obras eh : %d \n", media);
+
+        system("pause");
+        system("cls");
 
 
 
@@ -463,8 +553,6 @@ void media_de_paginas(){
             return totalObras;
         }
 
-        // printf("Obra eliminada\n");
-        // system("pause");
     }       
        
 }
@@ -472,7 +560,7 @@ void media_de_paginas(){
 
 int main()
 {
-    Publi obras[MAX_BIBLIO];
+    Publi obras[MAX_BIBLIO]; 
     int totalObras = 0;
 
     abertura();
