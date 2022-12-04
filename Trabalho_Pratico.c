@@ -212,25 +212,50 @@ void Publicaoes_que_contenha_PavraChave(Publi obras[], int totalObras)
 {
 }
 
+int verificaSeExisteId(Publi obras[], int totalObras, int id)
+{
+    for (int i = 0; i < totalObras; i++)
+    {
+        if (!obras[i].id == id)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void alterar(Publi obras[], int totalObras)
 {
-
     int alterar;
-    char op;
+    int op;
 
     listarTudo(obras, totalObras);
 
     printf("\nInsira o id da obra que deseja alterar : ");
     scanf("%d", &alterar);
 
-    for (int i = 0; i < totalObras; i++)
+    if (verificaSeExisteId)
     {
+        printf("Esse id nao existe\n");
+        return;
+    }
 
-        if (alterar == obras[i].id)
+    while (1)
+    {
+        printf("\nO que deseja alterar?(nome,tipo...): \n\n");
+        printf("\t1- Alterar autor \n");
+        printf("\t0- Sair \n");
+        scanf("%d", &op);
+
+        switch (op)
         {
-            printf("O que deseja alterar?(nome,tipo...): ");
+        case 1:
+            printf("\t1- Novo autor: \n");
             fflush(stdin);
-            gets(op);
+            scanf("%s", obras[alterar - 1].autor);
+            break;
+        case 0:
+            return;
         }
     }
 }
@@ -419,7 +444,6 @@ void listar(Publi obras[], int totalObras) // declaracao obras(struct publi) e i
             printf("\tPor favor, selecione apenas 1,2,3,4 ou 0\n");
             break;
         }
-
     } while (op != 0);
 
     system("cls");
