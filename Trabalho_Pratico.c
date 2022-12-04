@@ -31,19 +31,19 @@ int inserir(Publi obras[], int totalObras) // inteiro para add ao total de obras
     do
     {
 
-        /* printf("\nDigite o nome da publicacao: ");
+         printf("\nDigite o nome da publicacao: ");
         fflush(stdin);
         gets(obras[totalObras].nome);
 
         printf("\nTipo de publicacao (Livro, artigo cientifico, artigo de jornal, outros):");
         fflush(stdin);
-        gets(obras[totalObras].tipo); */
+        gets(obras[totalObras].tipo); 
 
         printf("\nNome do autor:");
         fflush(stdin);
         gets(obras[totalObras].autor);
 
-        /* printf("\nApelido Autor: ");
+         printf("\nApelido Autor: ");
         fflush(stdin);
         gets(obras[totalObras].autorApelido);
 
@@ -59,15 +59,14 @@ int inserir(Publi obras[], int totalObras) // inteiro para add ao total de obras
 
         printf("\nQuantas palavras chaves para esta publicao(Digite 1,2,..., ou 0 para nenhuma palavra chave): ");
         fflush(stdin);
-
         scanf("%d", &total_chave);
 
             for (int i = 0; i < total_chave; i++)
             {
-                printf("Digite(Ex: suspense,terror,academico),palavra: %d ", i+1);
+                printf("\nDigite(Ex: suspense,terror,academico): %d ", i+1);
                 fflush(stdin);
                 gets(obras[totalObras].palavra_chave[i]);
-            } */
+            } 
 
         printf("\nDeseja registrar mais alguma publicao? Digite s ou n:\n");
         fflush(stdin);
@@ -187,6 +186,7 @@ void todasAsPublicacoesTipo(Publi obras[], int totalObras)
     system("cls");
 }
 
+
 void todasPublicacoesAno(Publi obras[], int totalObras)
 {
 
@@ -208,21 +208,27 @@ void todasPublicacoesAno(Publi obras[], int totalObras)
     system("cls");
 }
 
+
 void Publicaoes_que_contenha_PavraChave(Publi obras[], int totalObras)
 {
 }
 
+
+
 int verificaSeExisteId(Publi obras[], int totalObras, int id)
 {
+
     for (int i = 0; i < totalObras; i++)
     {
         if (!obras[i].id == id)
         {
+
             return 1;
         }
     }
     return 0;
 }
+
 
 void alterar(Publi obras[], int totalObras)
 {
@@ -234,16 +240,24 @@ void alterar(Publi obras[], int totalObras)
     printf("\nInsira o id da obra que deseja alterar : ");
     scanf("%d", &alterar);
 
-    if (verificaSeExisteId)
+    if (verificaSeExisteId(obras,totalObras,alterar))
     {
+        
         printf("Esse id nao existe\n");
         return;
     }
 
     while (1)
-    {
-        printf("\nO que deseja alterar?(nome,tipo...): \n\n");
+    {   
+        printf("\nO que deseja alterar?(nome,tipo...):\n");
         printf("\t1- Alterar autor \n");
+        printf("\t2- Alterar apelido autor \n");
+        printf("\t3- Alterar nome da publicacao \n");
+        printf("\t4- Alterar tipo da publicao \n");
+        printf("\t5- Alterar ano \n");
+        printf("\t6- Alterar numero de paginas \n");
+        printf("\t7- Alterar Local \n");
+        printf("\t8- Alterar palavras chaves \n");
         printf("\t0- Sair \n");
         scanf("%d", &op);
 
@@ -254,10 +268,46 @@ void alterar(Publi obras[], int totalObras)
             fflush(stdin);
             scanf("%s", obras[alterar - 1].autor);
             break;
+        case 2:
+            printf("\t2- Novo apelido autor: \n");
+            fflush(stdin);
+            scanf("%s", obras[alterar -1].autorApelido);
+            break;
+        case 3:
+            printf("\t3- Novo nome da publicao: \n");
+            fflush(stdin);
+            scanf("%s", obras[alterar -1].nome);
+            break;
+        case 4:
+            printf("\t4- Novo tipo: \n");
+            fflush(stdin);
+            scanf("%s", obras[alterar -1].tipo);
+            break;
+        case 5:
+            printf("\t5- Novo ano: \n");
+            scanf("%d", &obras[alterar -1].ano_publi);
+            break;
+        case 6:
+            printf("\t6- Novo numero de paginas: \n");
+            scanf("%d", &obras[alterar - 1].num_pag);   // "&" para numero
+            break;
+        case 7:
+            printf("\t7- Novo Local: \n");
+            fflush(stdin);
+            scanf("%s", obras[alterar -1].local);
+            break;
+        case 8:
+            printf("\t7- Novas palavras chave: \n");
+            fflush(stdin);
+            scanf("%s", obras[alterar -1].palavra_chave);
+            break;
         case 0:
             return;
         }
     }
+        printf("**** Alteracao concluida**** \n");
+        system("pause");
+        system("cls");
 }
 
 int totalPublicacoes(Publi obras[], int totalObras)
@@ -275,9 +325,46 @@ int totalPublicacoes(Publi obras[], int totalObras)
     system("cls");
 }
 
-int totalAutores()
+int totalAutores(Publi obras[], int totalObras)
 {
+    char aux[MAX_BIBLIO][20];
+    int totalAux = 0; // variavel contadora
+    int autorJaExistente = 0;
+
+    for (int i = 0; i < totalObras; i++)
+    {
+        if (totalAux == 0)
+        {
+            strcpy(aux[totalAux], obras[i].autor);
+            totalAux++;
+            continue;
+        }
+
+        for (int j = 0; j < totalAux; j++)
+        {
+            if (!strcmp(obras[i].autor, aux[j]))
+            {
+                autorJaExistente = 1;
+                break;
+            }
+        }
+
+        if (!autorJaExistente)
+        {
+            strcpy(aux[totalAux], obras[i].autor);
+            totalAux++;
+        }
+
+        autorJaExistente = 0;
+    }
+
+    
+
+    system("pause");
+    system("cls");
 }
+
+
 
 int totalPalavras_chave()
 {
