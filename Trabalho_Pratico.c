@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#define MAX_BIBLIO 100
+#define MAX_BIBLIO 50
 
 typedef struct
 {
@@ -14,36 +14,85 @@ typedef struct
     int ano_publi;
     char local[15];
     int num_pag;
-    char palavra_chave[20][20]; // 20 palvras de 20 letras
+    char palavra_chave[5][20]; // 5 palvras de 20 letras
+    int total_chave;
 
 } Publi; // typedef da o apelido da struct, para nao precisar usar struct "..." toda vez
 
 // array que armazena o nome e tipo de publicação e restatante das vs
 
+void totalPalavrasChave(Publi obras[], int totalObras)
+{
+
+    int totalPalavrasChavePossivel = 250;
+
+    char aux[totalPalavrasChavePossivel][20];
+    int totalAux = 0; // variavel contadora
+    int palavraChaveJaExistente = 0;
+
+    for (int i = 0; i < totalObras; i++)
+    {
+        for (int j = 0; j < obras[i].total_chave; j++)
+        {
+            if (totalAux == 0)
+            {
+                strcpy(aux[totalAux], obras[i].palavra_chave[j]);
+                totalAux++;
+                continue;
+            }
+
+            for (int k = 0; k < totalAux; k++)
+            {
+                if (!strcmp(obras[i].palavra_chave[j], aux[k]))
+                {
+                    palavraChaveJaExistente = 1;
+                    break;
+                }
+            }
+
+            if (!palavraChaveJaExistente)
+            {
+                strcpy(aux[totalAux], obras[i].palavra_chave[j]);
+                totalAux++;
+            }
+
+            palavraChaveJaExistente = 0;
+        }
+    }
+
+    for (int i = 0; i < totalAux; i++)
+    {
+        printf("Palavra chave: %s\n", aux[i]);
+    }
+
+    printf("\nTotal de palavras chave: %d", totalAux);
+
+    system("pause");
+    system("cls");
+}
+
 int inserir(Publi obras[], int totalObras) // inteiro para add ao total de obras
 {
 
     system("cls");
-    int total_chave;
     int op;
     char resp;
 
     do
     {
-
-         printf("\nDigite o nome da publicacao: ");
+        printf("\nDigite o nome da publicacao: ");
         fflush(stdin);
         gets(obras[totalObras].nome);
 
         printf("\nTipo de publicacao (Livro, artigo cientifico, artigo de jornal, outros):");
         fflush(stdin);
-        gets(obras[totalObras].tipo); 
+        gets(obras[totalObras].tipo);
 
         printf("\nNome do autor:");
         fflush(stdin);
         gets(obras[totalObras].autor);
 
-         printf("\nApelido Autor: ");
+        printf("\nApelido Autor: ");
         fflush(stdin);
         gets(obras[totalObras].autorApelido);
 
@@ -59,14 +108,14 @@ int inserir(Publi obras[], int totalObras) // inteiro para add ao total de obras
 
         printf("\nQuantas palavras chaves para esta publicao(Digite 1,2,..., ou 0 para nenhuma palavra chave): ");
         fflush(stdin);
-        scanf("%d", &total_chave);
+        scanf("%d", &obras[totalObras].total_chave);
 
-            for (int i = 0; i < total_chave; i++)
-            {
-                printf("\nDigite(Ex: suspense,terror,academico): %d ", i+1);
-                fflush(stdin);
-                gets(obras[totalObras].palavra_chave[i]);
-            } 
+        for (int i = 0; i < obras[totalObras].total_chave; i++)
+        {
+            printf("\nDigite(Ex: suspense,terror,academico): %d ", i + 1);
+            fflush(stdin);
+            gets(obras[totalObras].palavra_chave[i]);
+        }
 
         printf("\nDeseja registrar mais alguma publicao? Digite s ou n:\n");
         fflush(stdin);
@@ -136,6 +185,8 @@ void todos_Autores(Publi obras[], int totalObras)
         printf("Autor: %s\n", aux[i]);
     }
 
+    printf("\nTotal de autores: %d", totalAux);
+
     system("pause");
     system("cls");
 }
@@ -186,7 +237,6 @@ void todasAsPublicacoesTipo(Publi obras[], int totalObras)
     system("cls");
 }
 
-
 void todasPublicacoesAno(Publi obras[], int totalObras)
 {
 
@@ -208,12 +258,9 @@ void todasPublicacoesAno(Publi obras[], int totalObras)
     system("cls");
 }
 
-
 void Publicaoes_que_contenha_PavraChave(Publi obras[], int totalObras)
 {
 }
-
-
 
 int verificaSeExisteId(Publi obras[], int totalObras, int id)
 {
@@ -229,7 +276,6 @@ int verificaSeExisteId(Publi obras[], int totalObras, int id)
     return 0;
 }
 
-
 void alterar(Publi obras[], int totalObras)
 {
     int alterar;
@@ -240,15 +286,15 @@ void alterar(Publi obras[], int totalObras)
     printf("\nInsira o id da obra que deseja alterar : ");
     scanf("%d", &alterar);
 
-    if (verificaSeExisteId(obras,totalObras,alterar))
+    if (verificaSeExisteId(obras, totalObras, alterar))
     {
-        
+
         printf("Esse id nao existe\n");
         return;
     }
 
     while (1)
-    {   
+    {
         printf("\nO que deseja alterar?(nome,tipo...):\n");
         printf("\t1- Alterar autor \n");
         printf("\t2- Alterar apelido autor \n");
@@ -271,43 +317,43 @@ void alterar(Publi obras[], int totalObras)
         case 2:
             printf("\t2- Novo apelido autor: \n");
             fflush(stdin);
-            scanf("%s", obras[alterar -1].autorApelido);
+            scanf("%s", obras[alterar - 1].autorApelido);
             break;
         case 3:
             printf("\t3- Novo nome da publicao: \n");
             fflush(stdin);
-            scanf("%s", obras[alterar -1].nome);
+            scanf("%s", obras[alterar - 1].nome);
             break;
         case 4:
             printf("\t4- Novo tipo: \n");
             fflush(stdin);
-            scanf("%s", obras[alterar -1].tipo);
+            scanf("%s", obras[alterar - 1].tipo);
             break;
         case 5:
             printf("\t5- Novo ano: \n");
-            scanf("%d", &obras[alterar -1].ano_publi);
+            scanf("%d", &obras[alterar - 1].ano_publi);
             break;
         case 6:
             printf("\t6- Novo numero de paginas: \n");
-            scanf("%d", &obras[alterar - 1].num_pag);   // "&" para numero
+            scanf("%d", &obras[alterar - 1].num_pag); // "&" para numero
             break;
         case 7:
             printf("\t7- Novo Local: \n");
             fflush(stdin);
-            scanf("%s", obras[alterar -1].local);
+            scanf("%s", obras[alterar - 1].local);
             break;
         case 8:
             printf("\t7- Novas palavras chave: \n");
             fflush(stdin);
-            scanf("%s", obras[alterar -1].palavra_chave);
+            scanf("%s", obras[alterar - 1].palavra_chave);
             break;
         case 0:
             return;
         }
     }
-        printf("**** Alteracao concluida**** \n");
-        system("pause");
-        system("cls");
+    printf("**** Alteracao concluida**** \n");
+    system("pause");
+    system("cls");
 }
 
 int totalPublicacoes(Publi obras[], int totalObras)
@@ -323,53 +369,6 @@ int totalPublicacoes(Publi obras[], int totalObras)
     printf("Total de obras: %d\n", totalAux);
     system("pause");
     system("cls");
-}
-
-int totalAutores(Publi obras[], int totalObras)
-{
-    char aux[MAX_BIBLIO][20];
-    int totalAux = 0; // variavel contadora
-    int autorJaExistente = 0;
-
-    for (int i = 0; i < totalObras; i++)
-    {
-        if (totalAux == 0)
-        {
-            strcpy(aux[totalAux], obras[i].autor);
-            totalAux++;
-            continue;
-        }
-
-        for (int j = 0; j < totalAux; j++)
-        {
-            if (!strcmp(obras[i].autor, aux[j]))
-            {
-                autorJaExistente = 1;
-                break;
-            }
-        }
-
-        if (!autorJaExistente)
-        {
-            strcpy(aux[totalAux], obras[i].autor);
-            totalAux++;
-        }
-
-        autorJaExistente = 0;
-    }
-
-    
-
-    system("pause");
-    system("cls");
-}
-
-
-
-int totalPalavras_chave()
-{
-
-    int totalPalavrasChave;
 }
 
 int total_de_paginas(Publi obras[], int totalObras)
@@ -464,10 +463,9 @@ void estatisca(Publi obras[], int totalObras)
             totalPublicacoes(obras, totalObras);
             break;
         case 2:
-            totalAutores(obras, totalObras);
             break;
         case 3:
-            totalPalavras_chave(obras, totalObras);
+            totalPalavrasChave(obras, totalObras);
             break;
         case 4:
             total_de_paginas(obras, totalObras);
