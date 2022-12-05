@@ -65,7 +65,7 @@ void totalPalavrasChave(Publi obras[], int totalObras)
         printf("Palavra chave: %s\n", aux[i]);
     }
 
-    printf("\nTotal de palavras chave: %d", totalAux);
+    printf("\nTotal de palavras chave: %d \n", totalAux);
 
     system("pause");
     system("cls");
@@ -258,8 +258,24 @@ void todasPublicacoesAno(Publi obras[], int totalObras)
     system("cls");
 }
 
-void Publicaoes_que_contenha_PavraChave(Publi obras[], int totalObras)
-{
+
+void Publicaoes_que_contenha_PavraChave(Publi obras[], int totalObras){
+
+    char publicacao;
+
+    for (int i = 0; i < totalObras; i++)
+    {   
+        if (obras[i].total_chave > 0 )
+        {
+           printf("\t Id:%d - Nome: %s | Tipo: %s | Autor: %s %s | Ano: %d \n\n", obras[i].id, obras[i].nome, obras[i].tipo, obras[i].autor, obras[i].autorApelido, obras[i].ano_publi);
+        }
+        
+        
+    }
+
+    system("pause");
+    system("cls");
+
 }
 
 int verificaSeExisteId(Publi obras[], int totalObras, int id)
@@ -356,20 +372,7 @@ void alterar(Publi obras[], int totalObras)
     system("cls");
 }
 
-int totalPublicacoes(Publi obras[], int totalObras)
-{
 
-    int totalAux = 0; // variavel contadora
-
-    for (int i = 0; i < totalObras; i++)
-    {
-        totalAux = totalAux + totalObras;
-    }
-
-    printf("Total de obras: %d\n", totalAux);
-    system("pause");
-    system("cls");
-}
 
 int total_de_paginas(Publi obras[], int totalObras)
 {
@@ -460,9 +463,10 @@ void estatisca(Publi obras[], int totalObras)
         {
 
         case 1:
-            totalPublicacoes(obras, totalObras);
+            printf("Total publicaoes: %d\n", totalObras);
             break;
         case 2:
+            todos_Autores(obras,totalObras);
             break;
         case 3:
             totalPalavrasChave(obras, totalObras);
